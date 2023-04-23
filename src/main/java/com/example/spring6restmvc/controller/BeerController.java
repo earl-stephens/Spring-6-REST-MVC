@@ -3,7 +3,9 @@ package com.example.spring6restmvc.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.spring6restmvc.model.Beer;
@@ -15,17 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 @RestController
+@RequestMapping("/api/vi/beer")
 public class BeerController {
 	
 	private final BeerService beerService;
 	
-	public Beer getBeerById(UUID id) {
+	@RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+	public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
 		log.debug("Get beer by Id - in controller");
 		
-		return beerService.getBeerById(id);
+		return beerService.getBeerById(beerId);
 	}
 	
-	@RequestMapping("/api/v1/beer")
+	@RequestMapping(method = RequestMethod.GET)
 	public List<Beer> listBeers() {
 		return beerService.listBeers();
 	}
