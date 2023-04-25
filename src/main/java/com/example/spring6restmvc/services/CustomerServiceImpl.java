@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.example.spring6restmvc.model.Customer;
 
@@ -84,6 +85,15 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void deleteCustomerById(UUID id) {
 		customerMap.remove(id);
+	}
+
+	@Override
+	public void patchCustomerById(UUID id, Customer customer) {
+		Customer existing = customerMap.get(id);
+		
+		if(StringUtils.hasText(customer.getName())) {
+			existing.setName(customer.getName());
+		}
 	}
 
 }
