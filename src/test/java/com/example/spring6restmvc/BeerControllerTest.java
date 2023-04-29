@@ -1,7 +1,6 @@
 package com.example.spring6restmvc;
 
-import static org.assertj.core.api.Assertions.not;
-import static org.hamcrest.core.Is.*;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -20,6 +19,8 @@ import com.example.spring6restmvc.controller.BeerController;
 import com.example.spring6restmvc.model.Beer;
 import com.example.spring6restmvc.services.BeerService;
 import com.example.spring6restmvc.services.BeerServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
@@ -27,10 +28,20 @@ class BeerControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	
+	@Autowired
+	ObjectMapper objectMapper;
+	
 	@MockBean
 	BeerService beerService;
 	
 	BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+	
+	@Test
+	void testCreateNewBeer() throws JsonProcessingException {
+		Beer beer = beerServiceImpl.listBeers().get(0);
+		
+		System.out.println(objectMapper.writeValueAsString(beer));
+	}
 	
 	@Test
 	void testGetBeerById() throws Exception{
