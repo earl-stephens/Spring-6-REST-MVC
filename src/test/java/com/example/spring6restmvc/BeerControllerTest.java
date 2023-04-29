@@ -1,9 +1,13 @@
 package com.example.spring6restmvc;
 
+import static org.assertj.core.api.Assertions.not;
+import static org.hamcrest.core.Is.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//import static org.hamcrest.CoreMatchers.not;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,16 @@ class BeerControllerTest {
 																.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 																.andExpect(jsonPath("$.id", is(testBeer.getId().toString())))
 																.andExpect(jsonPath("$.beerName", is(testBeer.getBeerName())));
+	}
+	
+	@Test
+	void testListBeers() throws Exception {
+		given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
+		
+		mockMvc.perform(get("/api/v1/beer").accept(MediaType.APPLICATION_JSON))
+											.andExpect(status().isOk())
+											.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+											.andExpect(jsonPath("$.length()", is(3)));
 	}
 
 }
