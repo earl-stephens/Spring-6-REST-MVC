@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +64,7 @@ public class CustomerControllerTest {
 	
 	@Test
 	void testGetCustomerByIdNotFound() throws Exception {
-		given(customerService.getCustmerById(any(UUID.class))).willThrow(NotFoundException.class);
+		given(customerService.getCustmerById(any(UUID.class))).willReturn(Optional.empty());
 		
 		mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
 										.andExpect(status().isNotFound());
@@ -131,7 +132,7 @@ public class CustomerControllerTest {
 	void testGetCustomerById() throws Exception {
 		Customer testCustomer = customerServiceImpl.listCustomers().get(0);
 		
-		given(customerService.getCustmerById(testCustomer.getId())).willReturn(testCustomer);
+		given(customerService.getCustmerById(testCustomer.getId())).willReturn(Optional.of(testCustomer));
 		
 		mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, testCustomer.getId()).accept(MediaType.APPLICATION_JSON))
 																		.andExpect(status().isOk())
