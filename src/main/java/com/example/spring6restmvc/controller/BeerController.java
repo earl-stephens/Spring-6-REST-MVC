@@ -29,7 +29,7 @@ public class BeerController {
 	
 	private final BeerService beerService;
 	public static final String BEER_PATH = "/api/v1/beer";
-	public static final String BEER_PATH_ID = "/api/v1/beer/{beerId}";
+	public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 	
 	@GetMapping(value = BEER_PATH_ID)
 	public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
