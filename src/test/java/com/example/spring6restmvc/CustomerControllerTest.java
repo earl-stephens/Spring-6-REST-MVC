@@ -30,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring6restmvc.controller.CustomerController;
+import com.example.spring6restmvc.controller.NotFoundException;
 import com.example.spring6restmvc.model.Customer;
 import com.example.spring6restmvc.services.CustomerService;
 import com.example.spring6restmvc.services.CustomerServiceImpl;
@@ -59,6 +60,14 @@ public class CustomerControllerTest {
 	
 	@Captor
 	ArgumentCaptor<Customer> customerArgumentCaptor;
+	
+	@Test
+	void testGetCustomerByIdNotFound() throws Exception {
+		given(customerService.getCustmerById(any(UUID.class))).willThrow(NotFoundException.class);
+		
+		mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
+										.andExpect(status().isNotFound());
+	}
 	
 	@Test
 	void testPatchCustomer() throws Exception {

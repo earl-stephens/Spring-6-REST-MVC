@@ -31,11 +31,6 @@ public class BeerController {
 	public static final String BEER_PATH = "/api/v1/beer";
 	public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 	
-	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity handleNotFoundException() {
-		return ResponseEntity.notFound().build();
-	}
-	
 	@GetMapping(value = BEER_PATH_ID)
 	public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
 		
