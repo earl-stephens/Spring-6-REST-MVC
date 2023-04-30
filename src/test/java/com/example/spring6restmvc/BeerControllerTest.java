@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.spring6restmvc.controller.BeerController;
+import com.example.spring6restmvc.controller.NotFoundException;
 import com.example.spring6restmvc.model.Beer;
 import com.example.spring6restmvc.services.BeerService;
 import com.example.spring6restmvc.services.BeerServiceImpl;
@@ -114,6 +115,15 @@ class BeerControllerTest {
 											.content(objectMapper.writeValueAsString(beer)))
 											.andExpect(status().isCreated())
 											.andExpect(header().exists("Location"));
+	}
+	
+	@Test
+	void testGetBeerByIdNotFound() throws Exception {
+		given(beerService.getBeerById(any(UUID.class))).willThrow(NotFoundException.class);
+		
+		mockMvc.perform(get(BeerController.BEER_PATH_ID, UUID.randomUUID()))
+								.andExpect(status().isNotFound());
+		
 	}
 	
 	@Test
