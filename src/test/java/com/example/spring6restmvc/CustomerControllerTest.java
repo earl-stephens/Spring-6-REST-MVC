@@ -73,8 +73,8 @@ public class CustomerControllerTest {
 																	.andExpect(status().isNoContent());
 		
 		verify(customerService).patchCustomerById(uuidArgumentCaptor.capture(), customerArgumentCaptor.capture());
-		assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
-		assertThat(customerMap.get("name")).isEqualTo(customerArgumentCaptor.getValue().getName());
+		assertThat(uuidArgumentCaptor.getValue()).isEqualTo(customer.getId());
+		assertThat(customerArgumentCaptor.getValue().getName()).isEqualTo(customerMap.get("name"));
 	}
 	
 	@Test
